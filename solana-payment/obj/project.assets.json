@@ -1,0 +1,170 @@
+{
+  "version": 3,
+  "targets": {
+    "net6.0": {
+      "Chaos.NaCl.Standard/1.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/Chaos.NaCl.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Chaos.NaCl.dll": {}
+        }
+      },
+      "Portable.BouncyCastle/1.9.0": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/BouncyCastle.Crypto.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/BouncyCastle.Crypto.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "Solnet.Wallet/6.1.0": {
+        "type": "package",
+        "dependencies": {
+          "Chaos.NaCl.Standard": "1.0.0",
+          "Portable.BouncyCastle": "1.9.0"
+        },
+        "compile": {
+          "lib/net6.0/Solnet.Wallet.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/Solnet.Wallet.dll": {
+            "related": ".xml"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Chaos.NaCl.Standard/1.0.0": {
+      "sha512": "8ajPyzu49LSIdPgeg56eDdKu1j8FZJngKgTn9rXHV3GNVly49XFvPAwoWuUT8xPze3OjVUOWQZaO82HWrYFFEw==",
+      "type": "package",
+      "path": "chaos.nacl.standard/1.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "chaos.nacl.standard.1.0.0.nupkg.sha512",
+        "chaos.nacl.standard.nuspec",
+        "lib/netstandard2.0/Chaos.NaCl.dll"
+      ]
+    },
+    "Portable.BouncyCastle/1.9.0": {
+      "sha512": "eZZBCABzVOek+id9Xy04HhmgykF0wZg9wpByzrWN7q8qEI0Qen9b7tfd7w8VA3dOeesumMG7C5ZPy0jk7PSRHw==",
+      "type": "package",
+      "path": "portable.bouncycastle/1.9.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net40/BouncyCastle.Crypto.dll",
+        "lib/net40/BouncyCastle.Crypto.xml",
+        "lib/netstandard2.0/BouncyCastle.Crypto.dll",
+        "lib/netstandard2.0/BouncyCastle.Crypto.xml",
+        "portable.bouncycastle.1.9.0.nupkg.sha512",
+        "portable.bouncycastle.nuspec"
+      ]
+    },
+    "Solnet.Wallet/6.1.0": {
+      "sha512": "qAacwo1RegP36lMqs5wIuvF5FIKUS3KWqbg0NfQMALwtAK040wDePRjxBmP/ovvx+UkWTx6FXRlSq0yXaKiolA==",
+      "type": "package",
+      "path": "solnet.wallet/6.1.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "icon.png",
+        "lib/net6.0/Solnet.Wallet.dll",
+        "lib/net6.0/Solnet.Wallet.xml",
+        "solnet.wallet.6.1.0.nupkg.sha512",
+        "solnet.wallet.nuspec"
+      ]
+    }
+  },
+  "projectFileDependencyGroups": {
+    "net6.0": [
+      "Solnet.Wallet >= 6.1.0"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\hadi\\.nuget\\packages\\": {},
+    "C:\\Users\\hadi\\AppData\\Roaming\\Godot\\mono\\GodotNuGetFallbackFolder": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "D:\\projects\\github\\solana-payment-hd\\solana-payment\\solana-payment.csproj",
+      "projectName": "solana-payment",
+      "projectPath": "D:\\projects\\github\\solana-payment-hd\\solana-payment\\solana-payment.csproj",
+      "packagesPath": "C:\\Users\\hadi\\.nuget\\packages\\",
+      "outputPath": "D:\\projects\\github\\solana-payment-hd\\solana-payment\\obj\\",
+      "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Users\\hadi\\AppData\\Roaming\\Godot\\mono\\GodotNuGetFallbackFolder",
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+      ],
+      "configFilePaths": [
+        "C:\\Users\\hadi\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\hadi\\AppData\\Roaming\\NuGet\\config\\Godot.Offline.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "net6.0"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
+        "D:\\sources\\nuget packages": {},
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "projectReferences": {}
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      }
+    },
+    "frameworks": {
+      "net6.0": {
+        "targetAlias": "net6.0",
+        "dependencies": {
+          "Solnet.Wallet": {
+            "target": "Package",
+            "version": "[6.1.0, )"
+          }
+        },
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48",
+          "net481"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "frameworkReferences": {
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          }
+        },
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101\\RuntimeIdentifierGraph.json"
+      }
+    }
+  }
+}

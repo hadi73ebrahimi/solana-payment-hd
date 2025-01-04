@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "hWt/EF7URvDSeOE+tYOQzzrxxnoGL1r06YkFCIKZiVczaAOjKzHVbfiRVen9j8s5Pl41T5ITi5IJgbdtS4/b7g==",
+  "success": true,
+  "projectFilePath": "D:\\projects\\github\\solana-payment-hd\\solana-payment\\solana-payment.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\hadi\\.nuget\\packages\\chaos.nacl.standard\\1.0.0\\chaos.nacl.standard.1.0.0.nupkg.sha512",
+    "C:\\Users\\hadi\\.nuget\\packages\\portable.bouncycastle\\1.9.0\\portable.bouncycastle.1.9.0.nupkg.sha512",
+    "C:\\Users\\hadi\\.nuget\\packages\\solnet.wallet\\6.1.0\\solnet.wallet.6.1.0.nupkg.sha512"
+  ],
+  "logs": []
+}

@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <RootNamespace>solana_payment</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Utils\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Solnet.Wallet" Version="6.1.0" />
+  </ItemGroup>
+
+</Project>
