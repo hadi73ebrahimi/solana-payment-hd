@@ -21,9 +21,12 @@ namespace solana_payment
 
         private readonly HdWalletGenerator _hdWalletGenerator;
         private readonly string _masterAddress = "MASTER_SOLANA_ADDRESS";
+        
+        public string Rpc { get; private set; }
+        
 
         private decimal MinValue = 0.0001m;
-        public PaymentService(string masterSeed,string finaladdress, int initialWalletCount = 20)
+        public PaymentService(string masterSeed,string finaladdress, string rpc, int initialWalletCount = 20 )
         {
             _hdWalletGenerator = new HdWalletGenerator(masterSeed);
 
@@ -35,6 +38,12 @@ namespace solana_payment
             _masterAddress = finaladdress;
             // Start the checker cycle
             Task.Run(() => StartCheckerCycle());
+            Rpc = rpc;
+        }
+
+        public void UpdateRpc(string rpc)
+        {
+            this.Rpc = rpc;
         }
 
         public string GetWallet(object payload)
@@ -64,11 +73,8 @@ namespace solana_payment
         {
             lock (_lock)
             {
-                var transactions = _paidTransactions.Where(it=> it.Amount>0).ToArray();
-                foreach (var transaction in transactions)
-                {
-                    _paidTransactions.Remove(transaction);
-                }
+                var transactions = _FinalTransactions.ToArray();
+                _FinalTransactions.Clear();
                 return transactions;
             }
         }
@@ -107,11 +113,20 @@ namespace solana_payment
         {
             wallet.InUse = false;
             wallet.InUseUntil = null;
+            var activewallets = _paidTransactions.Where(it => it.PaymentWallet == wallet.Address).ToArray();
+            foreach (var item in activewallets)
+            {
+                _paidTransactions.Remove(item);
+            }
         }
 
         private void UpdateTransactionRecord(string address,decimal amount,string paidby)
         {
-            //_paidTransactions.Add(new PaidTransaction(wallet.Address, balance, DateTime.UtcNow, null));
+            var activewallet = _paidTransactions.FirstOrDefault(it=> it.PaymentWallet==address);
+            if (activewallet == null) { return; }
+            activewallet.UpdatePay(paidby,amount);
+
+
         }
 
         private async Task<decimal> CheckWalletBalance(string address)
@@ -121,7 +136,7 @@ namespace solana_payment
             return new Random().Next(0, 10); // Simulated balance
         }
 
-        private async void TransferFunds(PaymentWallet wallet, decimal balance)
+        private async Task TransferFunds(PaymentWallet wallet, decimal balance)
         {
 
 
