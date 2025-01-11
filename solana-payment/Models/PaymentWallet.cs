@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace solana_payment.Models
+namespace SolanaPaymentHD.Models
 {
     internal sealed class PaymentWallet
     {

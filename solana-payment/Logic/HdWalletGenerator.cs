@@ -1,4 +1,4 @@
-﻿using solana_payment.Models;
+﻿using SolanaPaymentHD.Models;
 using Solnet.Wallet;
 using Solnet.Wallet.Bip39;
 using System;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace solana_payment.Logic
+namespace SolanaPaymentHD.Logic
 {
     internal class HdWalletGenerator
     {

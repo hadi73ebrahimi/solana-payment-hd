@@ -2,6 +2,15 @@
   "version": 3,
   "targets": {
     "net6.0": {
+      "Chaos.NaCl.Standard/1.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/Chaos.NaCl.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Chaos.NaCl.dll": {}
+        }
+      },
       "coverlet.collector/3.2.0": {
         "type": "package",
         "build": {
@@ -362,6 +371,19 @@
           }
         }
       },
+      "Portable.BouncyCastle/1.9.0": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/BouncyCastle.Crypto.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/BouncyCastle.Crypto.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "runtime.native.System/4.3.0": {
         "type": "package",
         "dependencies": {
@@ -373,6 +395,23 @@
         },
         "runtime": {
           "lib/netstandard1.0/_._": {}
+        }
+      },
+      "Solnet.Wallet/6.1.0": {
+        "type": "package",
+        "dependencies": {
+          "Chaos.NaCl.Standard": "1.0.0",
+          "Portable.BouncyCastle": "1.9.0"
+        },
+        "compile": {
+          "lib/net6.0/Solnet.Wallet.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/Solnet.Wallet.dll": {
+            "related": ".xml"
+          }
         }
       },
       "System.Collections/4.3.0": {
@@ -598,10 +637,35 @@
             "related": ".xml"
           }
         }
+      },
+      "solana-payment/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "dependencies": {
+          "Solnet.Wallet": "6.1.0"
+        },
+        "compile": {
+          "bin/placeholder/solana-payment.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/solana-payment.dll": {}
+        }
       }
     }
   },
   "libraries": {
+    "Chaos.NaCl.Standard/1.0.0": {
+      "sha512": "8ajPyzu49LSIdPgeg56eDdKu1j8FZJngKgTn9rXHV3GNVly49XFvPAwoWuUT8xPze3OjVUOWQZaO82HWrYFFEw==",
+      "type": "package",
+      "path": "chaos.nacl.standard/1.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "chaos.nacl.standard.1.0.0.nupkg.sha512",
+        "chaos.nacl.standard.nuspec",
+        "lib/netstandard2.0/Chaos.NaCl.dll"
+      ]
+    },
     "coverlet.collector/3.2.0": {
       "sha512": "xjY8xBigSeWIYs4I7DgUHqSNoGqnHi7Fv7/7RZD02rvZyG3hlsjnQKiVKVWKgr9kRKgmV+dEfu8KScvysiC0Wg==",
       "type": "package",
@@ -1318,6 +1382,21 @@
         "nuget.frameworks.nuspec"
       ]
     },
+    "Portable.BouncyCastle/1.9.0": {
+      "sha512": "eZZBCABzVOek+id9Xy04HhmgykF0wZg9wpByzrWN7q8qEI0Qen9b7tfd7w8VA3dOeesumMG7C5ZPy0jk7PSRHw==",
+      "type": "package",
+      "path": "portable.bouncycastle/1.9.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net40/BouncyCastle.Crypto.dll",
+        "lib/net40/BouncyCastle.Crypto.xml",
+        "lib/netstandard2.0/BouncyCastle.Crypto.dll",
+        "lib/netstandard2.0/BouncyCastle.Crypto.xml",
+        "portable.bouncycastle.1.9.0.nupkg.sha512",
+        "portable.bouncycastle.nuspec"
+      ]
+    },
     "runtime.native.System/4.3.0": {
       "sha512": "c/qWt2LieNZIj1jGnVNsE2Kl23Ya2aSTBuXMD6V7k9KWr6l16Tqdwq+hJScEpWER9753NWC8h96PaVNY5Ld7Jw==",
       "type": "package",
@@ -1330,6 +1409,20 @@
         "lib/netstandard1.0/_._",
         "runtime.native.system.4.3.0.nupkg.sha512",
         "runtime.native.system.nuspec"
+      ]
+    },
+    "Solnet.Wallet/6.1.0": {
+      "sha512": "qAacwo1RegP36lMqs5wIuvF5FIKUS3KWqbg0NfQMALwtAK040wDePRjxBmP/ovvx+UkWTx6FXRlSq0yXaKiolA==",
+      "type": "package",
+      "path": "solnet.wallet/6.1.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "icon.png",
+        "lib/net6.0/Solnet.Wallet.dll",
+        "lib/net6.0/Solnet.Wallet.xml",
+        "solnet.wallet.6.1.0.nupkg.sha512",
+        "solnet.wallet.nuspec"
       ]
     },
     "System.Collections/4.3.0": {
@@ -2292,6 +2385,11 @@
         "system.threading.tasks.4.3.0.nupkg.sha512",
         "system.threading.tasks.nuspec"
       ]
+    },
+    "solana-payment/1.0.0": {
+      "type": "project",
+      "path": "../solana-payment/solana-payment.csproj",
+      "msbuildProject": "../solana-payment/solana-payment.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -2299,7 +2397,8 @@
       "MSTest.TestAdapter >= 2.2.10",
       "MSTest.TestFramework >= 2.2.10",
       "Microsoft.NET.Test.Sdk >= 17.5.0",
-      "coverlet.collector >= 3.2.0"
+      "coverlet.collector >= 3.2.0",
+      "solana-payment >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -2340,7 +2439,11 @@
       "frameworks": {
         "net6.0": {
           "targetAlias": "net6.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "D:\\projects\\github\\solana-payment-hd\\solana-payment\\solana-payment.csproj": {
+              "projectPath": "D:\\projects\\github\\solana-payment-hd\\solana-payment\\solana-payment.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

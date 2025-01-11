@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace solana_payment.Models
+namespace SolanaPaymentHD.Models
 {
     public record PaidTransaction(string PaymentWallet,string Payer,DateTime Time,decimal Amount,object Payload);
     internal class ActiveTransaction
@@ -13,6 +13,7 @@ namespace solana_payment.Models
         public decimal Amount { get; private set; }
         public object Payload { get; init; }
         public string Payer { get; private set; }
+
         public ActiveTransaction(string paymentWallet,object payload)
         {
             PaymentWallet = paymentWallet;
@@ -28,6 +29,11 @@ namespace solana_payment.Models
         public PaidTransaction GetRecord()
         {
             return new PaidTransaction(PaymentWallet,Payer, DateTime.UtcNow,Amount, Payload);
+        }
+
+        public bool IsPaid()
+        {
+            return Payer != null;
         }
 
 

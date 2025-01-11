@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "lJJ+iZeo4x/h3fNHYemc+QgobMvkHuFYUrurapmt2bp0Fff0YqwQPhsH6fevZfX2jdF5aPFLALDN8FA1n5a3Wg==",
+  "dgSpecHash": "tsV7XEoH7lF/h/ZQmfppq7/OJRKvmeDz9xSlIKfyV4tNWsqmIp0xotyH0hZE7Cs+w2RUk0muTUnvAdnH/DMGuA==",
   "success": true,
   "projectFilePath": "D:\\projects\\github\\solana-payment-hd\\SolanaPaymentTest\\SolanaPaymentTest.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\hadi\\.nuget\\packages\\chaos.nacl.standard\\1.0.0\\chaos.nacl.standard.1.0.0.nupkg.sha512",
     "C:\\Users\\hadi\\.nuget\\packages\\coverlet.collector\\3.2.0\\coverlet.collector.3.2.0.nupkg.sha512",
     "C:\\Users\\hadi\\.nuget\\packages\\microsoft.codecoverage\\17.5.0\\microsoft.codecoverage.17.5.0.nupkg.sha512",
     "C:\\Users\\hadi\\.nuget\\packages\\microsoft.net.test.sdk\\17.5.0\\microsoft.net.test.sdk.17.5.0.nupkg.sha512",
@@ -15,7 +16,9 @@
     "C:\\Users\\hadi\\.nuget\\packages\\mstest.testframework\\2.2.10\\mstest.testframework.2.2.10.nupkg.sha512",
     "C:\\Users\\hadi\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
     "C:\\Users\\hadi\\.nuget\\packages\\nuget.frameworks\\5.11.0\\nuget.frameworks.5.11.0.nupkg.sha512",
+    "C:\\Users\\hadi\\.nuget\\packages\\portable.bouncycastle\\1.9.0\\portable.bouncycastle.1.9.0.nupkg.sha512",
     "C:\\Users\\hadi\\.nuget\\packages\\runtime.native.system\\4.3.0\\runtime.native.system.4.3.0.nupkg.sha512",
+    "C:\\Users\\hadi\\.nuget\\packages\\solnet.wallet\\6.1.0\\solnet.wallet.6.1.0.nupkg.sha512",
     "C:\\Users\\hadi\\.nuget\\packages\\system.collections\\4.3.0\\system.collections.4.3.0.nupkg.sha512",
     "C:\\Users\\hadi\\.nuget\\packages\\system.diagnostics.debug\\4.3.0\\system.diagnostics.debug.4.3.0.nupkg.sha512",
     "C:\\Users\\hadi\\.nuget\\packages\\system.diagnostics.textwritertracelistener\\4.3.0\\system.diagnostics.textwritertracelistener.4.3.0.nupkg.sha512",

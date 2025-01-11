@@ -97,3 +97,10 @@ D:\projects\github\solana-payment-hd\SolanaPaymentTest\obj\Debug\net6.0\refint\S
 D:\projects\github\solana-payment-hd\SolanaPaymentTest\obj\Debug\net6.0\SolanaPaymentTest.pdb
 D:\projects\github\solana-payment-hd\SolanaPaymentTest\obj\Debug\net6.0\SolanaPaymentTest.genruntimeconfig.cache
 D:\projects\github\solana-payment-hd\SolanaPaymentTest\obj\Debug\net6.0\ref\SolanaPaymentTest.dll
+D:\projects\github\solana-payment-hd\SolanaPaymentTest\obj\Debug\net6.0\SolanaPaymentTest.sourcelink.json
+D:\projects\github\solana-payment-hd\SolanaPaymentTest\bin\Debug\net6.0\CoverletSourceRootsMapping
+D:\projects\github\solana-payment-hd\SolanaPaymentTest\bin\Debug\net6.0\Chaos.NaCl.dll
+D:\projects\github\solana-payment-hd\SolanaPaymentTest\bin\Debug\net6.0\BouncyCastle.Crypto.dll
+D:\projects\github\solana-payment-hd\SolanaPaymentTest\bin\Debug\net6.0\Solnet.Wallet.dll
+D:\projects\github\solana-payment-hd\SolanaPaymentTest\bin\Debug\net6.0\solana-payment.dll
+D:\projects\github\solana-payment-hd\SolanaPaymentTest\bin\Debug\net6.0\solana-payment.pdb

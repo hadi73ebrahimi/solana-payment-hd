@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace solana_payment.Enum
+namespace SolanaPaymentHD.Enum
 {
     internal enum EnSolanaPaymentError
     {
