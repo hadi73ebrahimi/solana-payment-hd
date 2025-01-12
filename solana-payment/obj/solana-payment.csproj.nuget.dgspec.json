@@ -49,6 +49,22 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
+            "Solnet.Extensions": {
+              "target": "Package",
+              "version": "[6.1.0, )"
+            },
+            "Solnet.KeyStore": {
+              "target": "Package",
+              "version": "[6.1.0, )"
+            },
+            "Solnet.Programs": {
+              "target": "Package",
+              "version": "[6.1.0, )"
+            },
+            "Solnet.Rpc": {
+              "target": "Package",
+              "version": "[6.1.0, )"
+            },
             "Solnet.Wallet": {
               "target": "Package",
               "version": "[6.1.0, )"

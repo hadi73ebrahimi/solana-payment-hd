@@ -1,11 +1,11 @@
 using NuGet.Frameworks;
-using solana_payment.Utils;
+using SolanaPaymentHD.Utils;
 using SolanaPaymentHD;
 using System.Diagnostics;
 namespace SolanaPaymentTest
 {
     [TestClass]
-    public class UnitTest1
+    public class ServiceTest
     {
         string rpc = "https://api.mainnet-beta.solana.com";
         string seed = "caution junior piece nest muscle include thank venture entire rough ask trend";

@@ -11,10 +11,11 @@
 using System;
 using System.Reflection;
 
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("solana-payment.Tests")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("solana-payment")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6f1c9d533a0989c68bbaf2cfcef921d47e4c7272")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+65470a70c87deb65e575620df58b74715e7c5a6c")]
 [assembly: System.Reflection.AssemblyProductAttribute("solana-payment")]
 [assembly: System.Reflection.AssemblyTitleAttribute("solana-payment")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

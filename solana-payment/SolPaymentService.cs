@@ -1,5 +1,5 @@
 ﻿using Org.BouncyCastle.Asn1;
-using solana_payment.Logic;
+using SolanaPaymentHD.Logic;
 using SolanaPaymentHD.Logic;
 using SolanaPaymentHD.Models;
 using Solnet.Wallet;
@@ -133,7 +133,7 @@ namespace SolanaPaymentHD
 
         private async void TransferFunds(PaymentWallet wallet, decimal balance)
         {
-            await _solanacrypto.TransferFunds(wallet, balance);
+            await _solanacrypto.TransferFunds(wallet, balance,_masterAddress);
             ReleaseAddress(wallet);
         }
 

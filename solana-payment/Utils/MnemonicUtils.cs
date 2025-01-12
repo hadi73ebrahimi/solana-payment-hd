@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace solana_payment.Utils
+namespace SolanaPaymentHD.Utils
 {
     public static class MnemonicUtils
     {
