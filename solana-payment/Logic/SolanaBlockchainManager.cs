@@ -14,6 +14,9 @@ using Solnet.Programs;
 using Org.BouncyCastle.Crypto.Agreement.Srp;
 using Solnet.Rpc.Types;
 using System.Runtime.CompilerServices;
+using System.Reflection;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 
 [assembly: InternalsVisibleTo("SolanaPaymentTest")]
 namespace SolanaPaymentHD.Logic
@@ -81,7 +84,7 @@ namespace SolanaPaymentHD.Logic
 
         }
 
-        public async Task<string?> GetLatestPayer(string address)
+        public async Task<string?> GetLatestPayer(string address,decimal minamount)
         {
             var payeraddress = "";
             try
@@ -89,22 +92,30 @@ namespace SolanaPaymentHD.Logic
                 // Initialize the rpc client and a wallet
                 var rpcClient = ClientFactory.GetClient(_Rpc);
                 // Query transaction history for transactions to the given address
-                var transactions = await rpcClient.GetSignaturesForAddressAsync(address,limit:1);
-
+                var transactions = await rpcClient.GetSignaturesForAddressAsync(address,limit:5);
+                var iii = 0;
                 if (transactions != null && transactions.Result.Count > 0)
                 {
-                    // Get the first transaction (most recent) sender
-                    var latestTransaction = transactions.Result.FirstOrDefault();
-
-                    // Fetch transaction details to get the payer's address
-                    var transactionDetails = await rpcClient.GetConfirmedTransactionAsync(latestTransaction.Signature);
-
-                    if (transactionDetails != null)
+                    foreach (var transsign in transactions.Result)
                     {
-                        // Extract the sender's address (payer)
-                        var payerAddress = transactionDetails.Result.Transaction.Message.AccountKeys[0].ToString();
-                        return payerAddress;
+                        // Fetch transaction details to get the payer's address
+                        var transactionDetails = await rpcClient.GetTransactionAsync(transsign.Signature);
+                        File.WriteAllText(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + iii+".json", JsonSerializer.Serialize(transactionDetails));
+                        iii++;
+                        if (transactionDetails != null)
+                        {
+                            if (IsOnlyTransfer(transactionDetails.Result) == false) { continue; }
+                            if (IsReceiveSol(transactionDetails.Result.Meta) == false) { continue; }
+                            if (IsAboveMinimumAmount(transactionDetails.Result.Meta, minamount) == false) { continue; }
+
+                            var resultbalance = transactionDetails.Result.Meta.PreBalances[0] - transactionDetails.Result.Meta.PostBalances[0];
+                            decimal balanceInSol = (decimal)resultbalance / 1_000_000_000m;
+                            // Extract the sender's address (payer)
+                            var payerAddress = transactionDetails.Result.Transaction.Message.AccountKeys[0].ToString();
+                            return payerAddress;
+                        }
                     }
+
                 }
 
                 // No transactions found or error fetching details
@@ -119,6 +130,25 @@ namespace SolanaPaymentHD.Logic
             }
         }
 
+        private bool IsReceiveSol(TransactionMeta meta)
+        {
+            return meta.PreBalances[0] > meta.PostBalances[0];
+        }
+
+        private bool IsAboveMinimumAmount(TransactionMeta meta,decimal minimum)
+        {
+            var resultbalance = meta.PreBalances[0] - meta.PostBalances[0];
+            decimal balanceInSol = (decimal)resultbalance / 1_000_000_000m;
+            return balanceInSol >= minimum;
+        }
+
+        
+        private bool IsOnlyTransfer(TransactionMetaSlotInfo transactionResult)
+        {
+            if (transactionResult == null) { return false; }
+            return !(transactionResult.Meta.InnerInstructions != null && transactionResult.Meta.InnerInstructions.Length > 0);
+        }
+        
     }
     
 }

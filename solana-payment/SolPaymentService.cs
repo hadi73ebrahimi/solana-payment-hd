@@ -27,7 +27,7 @@ namespace SolanaPaymentHD
         
         public string Rpc { get; private set; }
         public int WalletExpireation { get; private set; } = 1;
-        
+        public decimal MinTransferAmount = 0.001m;
 
         private decimal MinValue = 0.0001m;
         public SolPaymentService(string masterSeed,string finaladdress, string rpc, int initialWalletCount = 20 )
@@ -108,7 +108,7 @@ namespace SolanaPaymentHD
                     if (activepayment!=null && activepayment.IsPaid()) { continue; }
 
                     decimal balance = await _solanacrypto.CheckWalletBalance(wallet.Address);
-                    string payer =await _solanacrypto.GetLatestPayer(wallet.Address);
+                    string payer =await _solanacrypto.GetLatestPayer(wallet.Address, MinTransferAmount);
                     
                     lock (_lock)
                     {
@@ -116,8 +116,7 @@ namespace SolanaPaymentHD
                         {
                             UpdateTransactionRecord(wallet.Address, balance, payer);
                         }
-                        // using balance to wait for transfer
-                        else if (wallet.InUseUntil < DateTime.UtcNow && balance<= MinValue)
+                        else if (wallet.InUseUntil < DateTime.UtcNow)
                         {
                             ReleaseAddress(wallet);
                         }

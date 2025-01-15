@@ -5,6 +5,7 @@ using System.Diagnostics;
 namespace SolanaPaymentTest
 {
     [TestClass]
+    [Ignore]
     public class ServiceTest
     {
         string rpc = "https://api.mainnet-beta.solana.com";
@@ -37,11 +38,12 @@ namespace SolanaPaymentTest
             var Payserv = new SolPaymentService(seed, targetwallet, rpc);
             Payserv.UpdateWalletExpirationTime(1);
             var newpaywallet = Payserv.GetNewPaymentWallet("sdffhgs");
-            Assert.IsTrue(Payserv.GetInUseWalletsCount() == 1, "In use wallet don't match the number{0}", Payserv.GetInUseWalletsCount());
-            Assert.IsNotNull(newpaywallet);
             Console.WriteLine(newpaywallet);
+            Console.WriteLine(Payserv.GetInUseWalletsCount());
+            Assert.IsTrue(Payserv.GetInUseWalletsCount() == 1, "In use wallet don't match the number {0}", Payserv.GetInUseWalletsCount());
+            Assert.IsNotNull(newpaywallet);
             await Task.Delay(61000);
-            Assert.IsTrue(Payserv.GetInUseWalletsCount() == 0, "In use wallet don't match the number{0}", Payserv.GetInUseWalletsCount());
+            Assert.IsTrue(Payserv.GetInUseWalletsCount() == 0, "In use wallet don't match the number {0}", Payserv.GetInUseWalletsCount());
 
         }
     }

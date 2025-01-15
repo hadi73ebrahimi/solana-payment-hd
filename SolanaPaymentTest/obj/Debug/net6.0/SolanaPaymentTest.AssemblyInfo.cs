@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SolanaPaymentTest")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+65470a70c87deb65e575620df58b74715e7c5a6c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+70cf8a6ba0d15f0bbf96da2303cdddf2eada8221")]
 [assembly: System.Reflection.AssemblyProductAttribute("SolanaPaymentTest")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SolanaPaymentTest")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
