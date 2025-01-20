@@ -5,8 +5,10 @@ using SolanaPaymentHD.Models;
 using Solnet.Wallet;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.Metrics;
 using System.Linq;
+using System.Reflection.PortableExecutable;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,10 +28,10 @@ namespace SolanaPaymentHD
         private readonly string _masterAddress = "MASTER_SOLANA_ADDRESS";
         
         public string Rpc { get; private set; }
-        public int WalletExpireation { get; private set; } = 1;
-        public decimal MinTransferAmount = 0.001m;
+        public int WalletExpireation { get; private set; } = 15;
 
-        private decimal MinValue = 0.0001m;
+        public decimal MaxLeftover = 0.0001m;
+
         public SolPaymentService(string masterSeed,string finaladdress, string rpc, int initialWalletCount = 20 )
         {
             _hdWalletGenerator = new HdWalletGenerator(masterSeed);
@@ -67,7 +69,7 @@ namespace SolanaPaymentHD
             {
                 var availableWallet = GetFreeWallet(); 
 
-
+                
                 availableWallet.InUse = true;
                 availableWallet.InUseUntil = DateTime.UtcNow.AddMinutes(WalletExpireation);
 
@@ -102,37 +104,87 @@ namespace SolanaPaymentHD
         {
             while (true)
             {
-                foreach (var wallet in _walletPool.Where(w => w.InUse))
-                {
-                    var activepayment = _WaitingForPayment.FirstOrDefault(it => it.PaymentWallet == wallet.Address);
-                    if (activepayment!=null && activepayment.IsPaid()) { continue; }
+                var tasks = _walletPool
+                    .Where(w => w.InUse) 
+                    .Select(pwall => ProcessWalletAsync(pwall)) 
+                    .ToList();
 
-                    decimal balance = await _solanacrypto.CheckWalletBalance(wallet.Address);
-                    string payer =await _solanacrypto.GetLatestPayer(wallet.Address, MinTransferAmount);
-                    
-                    lock (_lock)
-                    {
-                        if (balance > MinValue)
-                        {
-                            UpdateTransactionRecord(wallet.Address, balance, payer);
-                        }
-                        else if (wallet.InUseUntil < DateTime.UtcNow)
-                        {
-                            ReleaseAddress(wallet);
-                        }
-                    }
-
-
-                    if (balance > 0) { Task.Run(()=> TransferFunds(wallet, balance)); }
-                }
+                await Task.WhenAll(tasks);
 
                 await Task.Delay(TimeSpan.FromSeconds(15));
             }
         }
 
-        private async void TransferFunds(PaymentWallet wallet, decimal balance)
+        private async Task ProcessWalletAsync(PaymentWallet wallet)
         {
-            await _solanacrypto.TransferFunds(wallet, balance,_masterAddress);
+            try
+            {
+                var activePayment = GetActivePayment(wallet.Address);
+
+                if (activePayment == null) return;
+                if (activePayment.IsPaid()) return;
+                var isexpired = IsActiveTransactionExpired(wallet);
+                decimal balance = await CheckWalletBalance(wallet);
+                if (balance <= MaxLeftover && isexpired) { ReleaseExpiredWallet(wallet);return; }
+                if (balance <= MaxLeftover) { return; }
+
+                string? payer = await GetLatestPayer(wallet);
+                ProcessTransaction(wallet, balance, payer);
+
+                if (balance > 0)
+                {
+                    await TransferFunds(wallet, balance- MaxLeftover);
+                }
+            }
+            catch (Exception ex)
+            {
+                HandleError(wallet, ex);
+            }
+        }
+
+        private ActiveTransaction? GetActivePayment(string walletAddress)
+        {
+            return _WaitingForPayment.FirstOrDefault(it => it.PaymentWallet == walletAddress);
+        }
+
+        private async Task<decimal> CheckWalletBalance(PaymentWallet wallet)
+        {
+            return await _solanacrypto.CheckWalletBalance(wallet.Address);
+        }
+
+        private async Task<string?> GetLatestPayer(PaymentWallet wallet)
+        {
+            return await _solanacrypto.GetLatestPayer(wallet.Address, MaxLeftover);
+        }
+
+        private void ReleaseExpiredWallet(PaymentWallet wallet)
+        {
+            lock(_lock)
+            {
+                ReleaseAddress(wallet);
+            }
+            
+        }
+
+        private void ProcessTransaction(PaymentWallet wallet, decimal balance, string? payer)
+        {
+            lock (_lock)
+            {
+                UpdateTransactionRecord(wallet.Address, balance, payer);
+ 
+            }
+        }
+
+        private void HandleError(PaymentWallet wallet, Exception ex)
+        {
+            // Log the error but continue processing other wallets
+            Console.WriteLine($"Error processing wallet {wallet.Address}: {ex.Message}");
+            // You can log this to a file or monitoring system as well
+        }
+
+        private async Task TransferFunds(PaymentWallet wallet, decimal balance)
+        {
+            var state = await _solanacrypto.TransferAllFunds(wallet,_masterAddress);
             ReleaseAddress(wallet);
         }
 
@@ -152,10 +204,13 @@ namespace SolanaPaymentHD
             var activewallet = _WaitingForPayment.FirstOrDefault(it=> it.PaymentWallet==address);
             if (activewallet == null) { return; }
             activewallet.UpdatePay(paidby,amount);
-
-
+            _FinalTransactions.Add(activewallet.GetRecord());
         }
 
+        private bool IsActiveTransactionExpired(PaymentWallet wallet)
+        {
+            return wallet.InUseUntil < DateTime.UtcNow;
+        }
 
         private PaymentWallet GetFreeWallet()
         {

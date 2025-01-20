@@ -17,6 +17,7 @@ using System.Runtime.CompilerServices;
 using System.Reflection;
 using System.Text.Json.Serialization;
 using System.Text.Json;
+using System.Diagnostics;
 
 [assembly: InternalsVisibleTo("SolanaPaymentTest")]
 namespace SolanaPaymentHD.Logic
@@ -55,32 +56,99 @@ namespace SolanaPaymentHD.Logic
             return balanceInSol;
         }
 
-        public async Task TransferFunds(PaymentWallet wallet, decimal balance,string target)
+        public async Task<bool> TransferAllFunds(PaymentWallet wallet, string target)
         {
+            try
+            {
 
-            // Initialize the rpc client and a wallet
-            var rpcClient = ClientFactory.GetClient(_Rpc);
+                var rpcClient = ClientFactory.GetClient(_Rpc);
 
-            // Get the source account
-            var fromAccount = wallet;
 
-            // Get a recent block hash to include in the transaction
-            var blockHash = await rpcClient.GetLatestBlockHashAsync();
-            
-            var senderAccount = new Account(wallet.PrivateKey, wallet.Address);
+                var senderAccount = new Account(wallet.PrivateKey, wallet.Address);
+                var accountInfo = await rpcClient.GetAccountInfoAsync(senderAccount.PublicKey);
 
-            ulong amountInLamports = (ulong)(balance * 1_000_000_000m);
+                if (accountInfo?.Result?.Value == null)
+                {
+                    Debug.WriteLine("Failed to fetch account info.");
+                    return false;
+                }
 
-            // Create the transfer transaction
-            var transaction = new TransactionBuilder()
-                .SetRecentBlockHash(blockHash.Result.Value.Blockhash)
-                .SetFeePayer(senderAccount.PublicKey)
-                .AddInstruction(SystemProgram.Transfer(senderAccount.PublicKey, new PublicKey(target), amountInLamports))
-                .Build(senderAccount);
+                var rentExemptBalance = await rpcClient.GetMinimumBalanceForRentExemptionAsync(accountInfo.Result.Value.Data.Count);
 
-            // Send the transaction
-            var sendTransactionResult =await rpcClient.SendTransactionAsync(transaction);
+                ulong currentBalance = accountInfo.Result.Value.Lamports;
 
+                if (currentBalance <= rentExemptBalance.Result)
+                {
+                    Debug.WriteLine("Insufficient funds to cover rent exemption.");
+                    return false;
+                }
+
+                ulong amountToSend = currentBalance - rentExemptBalance.Result;
+
+                var blockHash = await rpcClient.GetLatestBlockHashAsync();
+
+
+                var transaction = new TransactionBuilder()
+                    .SetRecentBlockHash(blockHash.Result.Value.Blockhash)
+                    .SetFeePayer(senderAccount.PublicKey)
+                    .AddInstruction(SystemProgram.Transfer(senderAccount.PublicKey, new PublicKey(target), amountToSend))
+                    .Build(senderAccount);
+
+                var sendTransactionResult = await rpcClient.SendTransactionAsync(transaction);
+
+                return !string.IsNullOrEmpty(sendTransactionResult.Result);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+                return false;
+            }
+        }
+
+        public async Task<bool> TransferFunds(PaymentWallet wallet, decimal balance,string target)
+        {
+            try
+            {
+                var rpcClient = ClientFactory.GetClient(_Rpc);
+
+                var fromAccount = wallet;
+
+                var blockHash = await rpcClient.GetLatestBlockHashAsync();
+
+                var senderAccount = new Account(wallet.PrivateKey, wallet.Address);
+
+
+                ulong amountInLamports = (ulong)(balance * 1_000_000_000m);
+
+                var accountInfo = await rpcClient.GetAccountInfoAsync(senderAccount.PublicKey);
+                if (accountInfo?.Result?.Value == null)
+                {
+                    Debug.WriteLine("Failed to fetch account info.");
+                    return false;
+                }
+
+                var rentExemptBalance = await rpcClient.GetMinimumBalanceForRentExemptionAsync(accountInfo.Result.Value.Data.Count);
+
+                if (accountInfo.Result.Value.Lamports < amountInLamports + rentExemptBalance.Result)
+                {
+                    Debug.WriteLine("Insufficient funds to cover both transaction and rent.");
+                    return false;
+                }
+
+                var transaction = new TransactionBuilder()
+                    .SetRecentBlockHash(blockHash.Result.Value.Blockhash)
+                    .SetFeePayer(senderAccount.PublicKey)
+                    .AddInstruction(SystemProgram.Transfer(senderAccount.PublicKey, new PublicKey(target), amountInLamports))
+                    .Build(senderAccount);
+
+                var sendTransactionResult = await rpcClient.SendTransactionAsync(transaction);
+                return !string.IsNullOrEmpty(sendTransactionResult.Result);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+                return false;
+            }
 
         }
 
