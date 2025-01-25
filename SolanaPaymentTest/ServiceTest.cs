@@ -3,18 +3,21 @@ using SolanaPaymentHD.Utils;
 using SolanaPaymentHD;
 using System.Diagnostics;
 using System.Text.Json;
+using SolanaPaymentHD.Models;
+
 namespace SolanaPaymentTest
 {
     [TestClass]
     public class ServiceTest
     {
         string rpc = "";
+        int ratelimit = 10;
         string seed = "";
         string targetwallet = "";
         [TestMethod]
         public void TestHdWalletsAndPrint()
         {
-            var Payserv = new SolPaymentService(seed, targetwallet, rpc);
+            var Payserv = new SolPaymentService(seed, targetwallet, new RPCData(rpc, ratelimit));
             for (int i = 0; i < 20; i++)
             {
                 var address = Payserv.GetHDwalletAddress(i);
@@ -38,7 +41,7 @@ namespace SolanaPaymentTest
         [Ignore]
         public async Task TestPaymentPoolExpireWalletWithoutPayment()
         {
-            var Payserv = new SolPaymentService(seed, targetwallet, rpc);
+            var Payserv = new SolPaymentService(seed, targetwallet, new RPCData(rpc, ratelimit));
             Payserv.UpdateWalletExpirationTime(1);
 
             var newpaywallet = Payserv.GetNewPaymentWallet("sdffhgs");
@@ -53,7 +56,7 @@ namespace SolanaPaymentTest
         [TestMethod]
         public async Task TestPaymentWalletSuccessPayment()
         {
-            var Payserv = new SolPaymentService(seed, targetwallet, rpc);
+            var Payserv = new SolPaymentService(seed, targetwallet, new RPCData(rpc, ratelimit));
             Payserv.UpdateWalletExpirationTime(15);
             var newpaywallet = Payserv.GetNewPaymentWallet("paymenthere");
             Debug.WriteLine(newpaywallet);

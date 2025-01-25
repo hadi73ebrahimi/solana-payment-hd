@@ -27,12 +27,12 @@ namespace SolanaPaymentHD
         private readonly SolanaBlockchainManager _solanacrypto;
         private readonly string _masterAddress = "MASTER_SOLANA_ADDRESS";
         
-        public string Rpc { get; private set; }
+        public RPCData Rpc { get; private set; }
         public int WalletExpireation { get; private set; } = 15;
 
         public decimal MaxLeftover = 0.0001m;
 
-        public SolPaymentService(string masterSeed,string finaladdress, string rpc, int initialWalletCount = 20 )
+        public SolPaymentService(RPCData rpc,string masterSeed,string finaladdress, int initialWalletCount = 20 )
         {
             _hdWalletGenerator = new HdWalletGenerator(masterSeed);
             _solanacrypto = new SolanaBlockchainManager(rpc);
@@ -57,7 +57,7 @@ namespace SolanaPaymentHD
             return _walletPool[id].Address;
         }
 
-        public void UpdateRpc(string rpc)
+        public void UpdateRpc(RPCData rpc)
         {
             this.Rpc = rpc;
             _solanacrypto.UpdateRpc(Rpc);

@@ -12,7 +12,6 @@ This project provides a **Solana payment service** implemented in C#. It allows 
 ---
 
 ## TODO
-- Rate limit for RPC
 - Config object for payment service
 - Exception system
 
